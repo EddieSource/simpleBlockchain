@@ -27,4 +27,25 @@ class Blockchain:
         #give the last block of the chain
         return self.chain[-1]
 
+    def proof_of_work(self, previous_proof):
+        #increment new_proof in while loop
+        new_proof = 1
+        #once find the proof will cmake true check_proof
+        check_proof = False
+        while check_proof is False:
+            # need to be non symmetrical, or two proofs would be equal; could be more complex
+            # encode to be readable by sha-256 and convert the result to hex number
+            hash_operation = hashlib.sha256(str(new_proof**2 - previous_proof**2).encode()).hexdigest()
+
+            # check if first four character are 0s; hash_operation is string
+            if hash_operation[0:4] == '0000':
+                check_proof = True
+            else:
+                new_proof += 1
+
+            #find the new_proof(the Nounce val)
+            return new_proof
+
+
+
 #part 2 - Mining our Blockchain
