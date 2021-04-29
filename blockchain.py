@@ -48,5 +48,13 @@ class Blockchain:
             return new_proof
 
 
+    def hash(self, block):
+        # hash a block
+        # use json library to make the block a string
+        encoded_block = json.dumps(block, sort_keys=True).encode()
+        return hashlib.sha256(encoded_block).hexdigest()
+
+
+
 
 #part 2 - Mining our Blockchain
