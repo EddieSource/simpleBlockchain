@@ -35,7 +35,8 @@ class Blockchain:
         check_proof = False
         while check_proof is False:
             # need to be non symmetrical, or two proofs would be equal;
-            # could be more complex(in real world this is changed to hash the data field of the block object)
+            # could be more complex:
+            # in real world this is changed to hash the data field(or with any other field) of the block object
             # encode to be readable by sha-256 and convert the result to hex number
             hash_operation = hashlib.sha256(str(new_proof**2 - previous_proof**2).encode()).hexdigest()
 
@@ -52,9 +53,9 @@ class Blockchain:
         new_proof = 1
         check_proof = False
         while check_proof is False:
-            expected_output = hash(expected_block)
+            expected_hash = self.hash(expected_block)
             # random target '0000'
-            if expected_output[:4] == '0000':
+            if expected_hash[:4] == '0000':
                 check_proof = True
             else:
                 new_proof += 1
@@ -81,6 +82,7 @@ class Blockchain:
             previous_proof = previous_block['proof']
             curr_proof = curr_block['proof']
             hash_operation = hashlib.sha256(str(curr_proof ** 2 - previous_proof ** 2).encode()).hexdigest()
+            #hash_operation = self.hash(curr_block)
             if hash_operation[:4] != '0000':
                 return False
 
