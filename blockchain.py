@@ -94,3 +94,9 @@ class Blockchain:
 
 
 #part 2 - Mining our Blockchain
+
+# Creating a Web App based on Flask
+app = Flask(__name__)
+blockchain = Blockchain()
+
+# Creating a Blockchain
