@@ -99,4 +99,23 @@ class Blockchain:
 app = Flask(__name__)
 blockchain = Blockchain()
 
+#CRUD get method
+@app.route('/mine_block', methods=["GET"])
+def mine_block():
+    prev_block = blockchain.get_previous_block()
+    prev_proof = prev_block['proof']
+
+    #main mining work: find the expected_proof
+    curr_proof = blockchain.proof_of_work(prev_proof)
+
+    prev_hash = blockchain.hash(prev_block)
+    curr_block = blockchain.create_block(curr_proof, prev_hash)
+    # return a json object
+    response = {'message': 'Congratulations, you just mined a block!',
+                'index': curr_block['index'],
+                'timestamp': curr_block['timestamp'],
+                'proof': curr_block['proof'],
+                'prev_hash': curr_block['previous_hash']}
+    return jsonify(response), 200 # demo on postman:200 means everything is ok
+
 # Creating a Blockchain
