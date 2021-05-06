@@ -97,10 +97,12 @@ class Blockchain:
 
 # Creating a Web App based on Flask
 app = Flask(__name__)
+
 blockchain = Blockchain()
 
 #CRUD get method
 @app.route('/mine_block', methods=["GET"])
+#mining a new block
 def mine_block():
     prev_block = blockchain.get_previous_block()
     prev_proof = prev_block['proof']
@@ -108,6 +110,7 @@ def mine_block():
     #main mining work: find the expected_proof
     curr_proof = blockchain.proof_of_work(prev_proof)
 
+    #add the correctly mined block to our chain
     prev_hash = blockchain.hash(prev_block)
     curr_block = blockchain.create_block(curr_proof, prev_hash)
     # return a json object
@@ -118,4 +121,9 @@ def mine_block():
                 'prev_hash': curr_block['previous_hash']}
     return jsonify(response), 200 # demo on postman:200 means everything is ok
 
-# Creating a Blockchain
+# getting the full Blockchain
+@app.route('/get_chain', methods=["GET"])
+def get_chain():
+    response = {'chain': blockchain.chain,
+                'length': len(blockchain.chain)}
+    return jsonify(response), 200
