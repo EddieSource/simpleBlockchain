@@ -16,7 +16,7 @@ class Blockchain:
         # use this after a block is mined: use this after finding the proof using 'proof of work': define the problem
         # can create more by adding the 'data' key (will use this in next module)
         block = {'index': len(self.chain) + 1,
-                 'timestamp': datetime.datetime.now(), # return year,month,day,hour,min,sec
+                 'timestamp': str(datetime.datetime.now()), # return year,month,day,hour,min,sec
                  'proof': proof,
                  'previous_hash': previous_hash
                  } # a block is implemented by a dictionary
@@ -97,6 +97,7 @@ class Blockchain:
 
 # Creating a Web App based on Flask
 app = Flask(__name__)
+# app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
 
 blockchain = Blockchain()
 
@@ -110,7 +111,7 @@ def mine_block():
     #main mining work: find the expected_proof
     curr_proof = blockchain.proof_of_work(prev_proof)
 
-    #add the correctly mined block to our chain
+    #create and add the correctly mined block to our chain
     prev_hash = blockchain.hash(prev_block)
     curr_block = blockchain.create_block(curr_proof, prev_hash)
     # return a json object
@@ -127,3 +128,8 @@ def get_chain():
     response = {'chain': blockchain.chain,
                 'length': len(blockchain.chain)}
     return jsonify(response), 200
+
+# Running the app on http://127.0.0.1:5000/
+# use postman to test
+app.run(host = '0.0.0.0', port = 5000)
+
